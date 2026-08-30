@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import "./login.css";
+import "../boton/boton.css";
+import "../decoracion/decoracion.css";
 import Image from "next/image";
 
 export default function Login() {
@@ -137,7 +139,7 @@ export default function Login() {
             <a className="login__enlace" href="#">
               Forgot password?
             </a>
-            <a className="login__enlace" href="#">
+            <a className="login__enlace" href="/register">
               Register
             </a>
           </div>
