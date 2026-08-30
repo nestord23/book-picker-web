@@ -1,9 +1,10 @@
-.login {
+.registro {
     position: relative;
     display: flex;
-    min-height: 100dvh;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 100dvh;
     overflow: hidden;
     padding: 48px 16px;
     background-color: #fdfcf7;
@@ -11,7 +12,7 @@
     background-size: 400px 400px;
 }
 
-.login__card {
+.registro__card {
     position: relative;
     z-index: 1;
     width: 100%;
@@ -21,34 +22,47 @@
     box-shadow: 8px 8px 0 #000000;
 }
 
-.login__cabecera {
-    display: flex;
-    height: 140px;
-    align-items: center;
-    justify-content: center;
-    background-color: #4d7fff;
-    border-bottom: 4px solid #000000;
-}
-
-.login__logo {
-    width: 200px;
-    height: auto;
-    transform: rotate(-2deg);
-    padding: 10px 24px;
-    background-color: #ffffff;
+.registro__detalle {
+    position: absolute;
+    z-index: 1;
+    top: -36px;
+    right: -36px;
+    width: 96px;
+    height: 64px;
+    background-color: #b4ff39;
     border: 4px solid #000000;
     box-shadow: 4px 4px 0 #000000;
-    display: block;
+    transform: rotate(8deg);
 }
 
-.login__cuerpo {
+.registro__cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 32px 0;
+}
+
+.registro__logo {
+    transform: rotate(-2deg);
+    padding: 10px 24px;
+    background-color: #ffd500;
+    border: 4px solid #000000;
+    box-shadow: 4px 4px 0 #000000;
+    font-family: var(--font-archivo-black);
+    font-size: 50px;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    color: #7d7767;
+}
+
+.registro__cuerpo {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 36px 32px 40px;
+    padding: 40px 32px;
 }
 
-.login__titulo {
+.registro__titulo {
     font-family: var(--font-archivo-black);
     font-size: 40px;
     font-weight: 400;
@@ -59,7 +73,7 @@
     color: #111111;
 }
 
-.login__subtitulo {
+.registro__subtitulo {
     margin-top: 10px;
     font-family: var(--font-geist-mono);
     font-size: 14px;
@@ -67,35 +81,20 @@
     text-align: center;
 }
 
-.login__banner {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 14px;
-    border: 2px solid #b3261e;
-    background-color: #ffd6d6;
-    color: #b3261e;
-    font-family: var(--font-geist-mono);
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.4;
-    border-radius: 2px;
-}
-
-.login__formulario {
+.registro__formulario {
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin-top: 8px;
 }
 
-.login__campo {
+.registro__campo {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-.login__etiqueta {
+.registro__etiqueta {
     font-family: var(--font-geist-mono);
     font-size: 12px;
     font-weight: 600;
@@ -103,12 +102,12 @@
     text-transform: uppercase;
 }
 
-.login__contrasena {
+.registro__contrasena {
     position: relative;
     display: flex;
 }
 
-.login__input {
+.registro__input {
     width: 100%;
     padding: 12px 14px;
     background-color: #ffffff;
@@ -119,21 +118,21 @@
     color: #111111;
 }
 
-.login__input::placeholder {
-    color: #9a9a9a;
+.registro__input::placeholder {
+    color: #666666;
 }
 
-.login__input:focus {
+.registro__input:focus {
     outline: none;
     background-color: #ffffff;
     box-shadow: 2px 2px 0 #000000;
 }
 
-.login__input--con-ojo {
+.registro__input--con-ojo {
     padding-right: 44px;
 }
 
-.login__ojo {
+.registro__ojo {
     position: absolute;
     top: 50%;
     right: 10px;
@@ -148,31 +147,43 @@
     cursor: pointer;
 }
 
-.login__ojo:hover {
+.registro__ojo:hover {
     color: #000000;
 }
 
-.login__enlaces {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.registro__ayuda {
+    font-family: var(--font-geist-mono);
+    font-size: 11px;
+    color: #666666;
+    letter-spacing: 0.5px;
 }
 
-.login__enlace {
+.registro__footer {
+    z-index: 1;
+    margin-top: 24px;
+    text-align: center;
+}
+
+.registro__footer-texto {
     font-family: var(--font-geist-mono);
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    text-decoration: underline;
+    font-size: 13px;
     color: #111111;
 }
 
-.login__enlace:hover {
+.registro__enlace {
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    color: #111111;
+}
+
+.registro__enlace:hover {
     color: #4d7fff;
 }
 
 @media (max-width: 900px) {
-    .decoracion {
+    .registro__detalle {
         display: none;
     }
 }

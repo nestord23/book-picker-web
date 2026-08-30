@@ -1,0 +1,39 @@
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #000000;
+  box-shadow: 4px 4px 0 #000000;
+  cursor: pointer;
+  font-family: var(--font-archivo-black);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease;
+}
+
+.boton:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.boton:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.boton--primario {
+  width: 100%;
+  padding: 16px;
+  background-color: #ffd500;
+  font-size: 16px;
+}
+
+.boton--azul {
+  width: 100%;
+  padding: 16px;
+  background-color: #4d7fff;
+  color: #000000;
+  font-size: 16px;
+}
