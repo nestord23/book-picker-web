@@ -52,6 +52,7 @@
     font-size: 50px;
     letter-spacing: 2px;
     white-space: nowrap;
+
     color: #7d7767;
 }
 
@@ -100,6 +101,7 @@
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
+    color: #000000;
 }
 
 .registro__contrasena {
