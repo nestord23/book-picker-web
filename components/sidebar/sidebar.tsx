@@ -13,6 +13,7 @@ type SidebarProps = {
   items?: Item[];
   logoHref?: string;
   onAgregar?: () => void;
+  onCerrarSesion?: () => void;
 };
 
 const ITEMS_POR_DEFECTO: Item[] = [
@@ -27,6 +28,7 @@ export default function Sidebar({
   items = ITEMS_POR_DEFECTO,
   logoHref = "/",
   onAgregar,
+  onCerrarSesion,
 }: SidebarProps) {
   return (
     <aside className="sidebar">
@@ -51,6 +53,16 @@ export default function Sidebar({
       <button className="sidebar__cta" type="button" onClick={onAgregar}>
         + Add New Book
       </button>
+
+      {onCerrarSesion && (
+        <button
+          className="sidebar__cerrar"
+          type="button"
+          onClick={onCerrarSesion}
+        >
+          Log out
+        </button>
+      )}
     </aside>
   );
 }

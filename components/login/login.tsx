@@ -1,14 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import "./login.css";
 import "../boton/boton.css";
 import "../decoracion/decoracion.css";
 import Image from "next/image";
 
 export default function Login() {
+  const { login } = useAuth();
+  const router = useRouter();
   const [verContrasena, setVerContrasena] = useState(false);
-  const [autenticacionFallida, setAutenticacionFallida] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [autenticacionFallida, setAutenticacionFallida] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+
+  async function manejarEnvio(evento: FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    setEnviando(true);
+    setAutenticacionFallida(false);
+
+    const resultado = await login({ email, password });
+
+    setEnviando(false);
+
+    if (resultado.success) {
+      router.push("/biblioteca");
+    } else {
+      setAutenticacionFallida(true);
+    }
+  }
 
   return (
     <div className="login">
@@ -55,10 +78,7 @@ export default function Login() {
             </div>
           )}
 
-          <form
-            className="login__formulario"
-            onSubmit={(e) => e.preventDefault()}
-          >
+          <form className="login__formulario" onSubmit={manejarEnvio}>
             <div className="login__campo">
               <label className="login__etiqueta" htmlFor="email">
                 Email address
@@ -68,8 +88,12 @@ export default function Login() {
                 className="login__input"
                 type="email"
                 name="email"
+                required
                 autoComplete="email"
                 placeholder="tucorreo@ejemplo.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={enviando}
               />
             </div>
 
@@ -83,8 +107,12 @@ export default function Login() {
                   className="login__input login__input--con-ojo"
                   type={verContrasena ? "text" : "password"}
                   name="password"
+                  required
                   autoComplete="current-password"
                   placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={enviando}
                 />
                 <button
                   className="login__ojo"
@@ -130,8 +158,8 @@ export default function Login() {
               </div>
             </div>
 
-            <button className="boton boton--primario" type="submit">
-              Iniciar sesión
+            <button className="boton boton--primario" type="submit" disabled={enviando}>
+              {enviando ? "Iniciando sesión..." : "Iniciar sesión"}
             </button>
           </form>
 

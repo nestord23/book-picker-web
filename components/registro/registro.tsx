@@ -1,13 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import "./registro.css";
 import "../boton/boton.css";
 import "../decoracion/decoracion.css";
 
 export default function Registro() {
+  const { register } = useAuth();
+  const router = useRouter();
   const [verContrasena, setVerContrasena] = useState(false);
+  const [nombre, setNombre] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [registroFallido, setRegistroFallido] = useState<string | null>(null);
+  const [enviando, setEnviando] = useState(false);
+
+  async function manejarEnvio(evento: FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    setEnviando(true);
+    setRegistroFallido(null);
+
+    const resultado = await register({ name: nombre || undefined, email, password });
+
+    setEnviando(false);
+
+    if (resultado.success) {
+      router.push("/biblioteca");
+    } else {
+      setRegistroFallido(resultado.error ?? "No se pudo crear la cuenta.");
+    }
+  }
 
   return (
     <div className="registro">
@@ -29,10 +54,13 @@ export default function Registro() {
             aggressive enthusiasm.
           </p>
 
-          <form
-            className="registro__formulario"
-            onSubmit={(e) => e.preventDefault()}
-          >
+          {registroFallido && (
+            <div className="registro__banner registro__banner--error" role="alert">
+              {registroFallido}
+            </div>
+          )}
+
+          <form className="registro__formulario" onSubmit={manejarEnvio}>
             <div className="registro__campo">
               <label className="registro__etiqueta" htmlFor="nombre">
                 Name (optional)
@@ -44,6 +72,9 @@ export default function Registro() {
                 name="nombre"
                 autoComplete="name"
                 placeholder="Tu nombre"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                disabled={enviando}
               />
             </div>
 
@@ -59,6 +90,9 @@ export default function Registro() {
                 required
                 autoComplete="email"
                 placeholder="tucorreo@ejemplo.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={enviando}
               />
             </div>
 
@@ -73,8 +107,12 @@ export default function Registro() {
                   type={verContrasena ? "text" : "password"}
                   name="password"
                   required
+                  minLength={8}
                   autoComplete="new-password"
                   placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={enviando}
                 />
                 <button
                   className="registro__ojo"
@@ -121,8 +159,8 @@ export default function Registro() {
               <p className="registro__ayuda">Min. 8 characters</p>
             </div>
 
-            <button className="boton boton--azul" type="submit">
-              Crear cuenta -&gt;
+            <button className="boton boton--azul" type="submit" disabled={enviando}>
+              {enviando ? "Creando cuenta..." : "Crear cuenta -&gt;"}
             </button>
           </form>
         </div>

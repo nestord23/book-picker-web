@@ -1,49 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useLibrary, type LibraryStatus } from "@/hooks/useLibrary";
+import { useAuth } from "@/hooks/useAuth";
 import "./biblioteca.css";
 import Sidebar from "../sidebar/sidebar";
 
 type Estado = "TO READ" | "READING" | "READ";
-
-type Libro = {
-  titulo: string;
-  autor: string;
-  estado: Estado;
-  rating: number;
-};
-
-const LIBROS: Libro[] = [
-  { titulo: "Dune", autor: "Frank Herbert", estado: "READING", rating: 5 },
-  {
-    titulo: "Neuromancer",
-    autor: "William Gibson",
-    estado: "TO READ",
-    rating: 0,
-  },
-  { titulo: "The Hobbit", autor: "J.R.R. Tolkien", estado: "READ", rating: 4 },
-  { titulo: "Blindsight", autor: "Peter Watts", estado: "READING", rating: 4 },
-  {
-    titulo: "Dune Messiah",
-    autor: "Frank Herbert",
-    estado: "TO READ",
-    rating: 0,
-  },
-  { titulo: "Hyperion", autor: "Dan Simmons", estado: "READ", rating: 5 },
-  {
-    titulo: "Snow Crash",
-    autor: "Neal Stephenson",
-    estado: "READING",
-    rating: 3,
-  },
-  { titulo: "Foundation", autor: "Isaac Asimov", estado: "READ", rating: 5 },
-  {
-    titulo: "The Left Hand",
-    autor: "Ursula K. Le Guin",
-    estado: "TO READ",
-    rating: 0,
-  },
-];
 
 const FILTROS: Array<"ALL" | Estado> = ["ALL", "TO READ", "READING", "READ"];
 
@@ -53,14 +17,22 @@ const COLOR_POR_ESTADO: Record<Estado, string> = {
   READ: "#7aad3f",
 };
 
-function Estrellas({ rating }: { rating: number }) {
+const STATUS_PER_FILTRO: Record<"ALL" | Estado, LibraryStatus | undefined> = {
+  ALL: undefined,
+  "TO READ": "to_read",
+  READING: "reading",
+  READ: "read",
+};
+
+function Estrellas({ rating }: { rating: number | null }) {
+  const estrellas = rating ?? 0;
   return (
-    <div className="tarjeta-libro__estrellas" aria-label={`${rating} de 5`}>
+    <div className="tarjeta-libro__estrellas" aria-label={`${estrellas} de 5`}>
       {[1, 2, 3, 4, 5].map((n) => (
         <svg
           key={n}
           className={`tarjeta-libro__estrella ${
-            n <= rating ? "tarjeta-libro__estrella--activa" : ""
+            n <= estrellas ? "tarjeta-libro__estrella--activa" : ""
           }`}
           viewBox="0 0 24 24"
           width="16"
@@ -75,16 +47,30 @@ function Estrellas({ rating }: { rating: number }) {
 }
 
 export default function Biblioteca() {
+  const router = useRouter();
+  const { logout } = useAuth();
   const [filtroActivo, setFiltroActivo] = useState<"ALL" | Estado>("ALL");
 
-  const librosVisibles =
-    filtroActivo === "ALL"
-      ? LIBROS
-      : LIBROS.filter((libro) => libro.estado === filtroActivo);
+  const { libros, isLoading, error } = useLibrary(
+    STATUS_PER_FILTRO[filtroActivo],
+  );
+
+  function manejarCerrarSesion() {
+    logout();
+    router.push("/");
+  }
+
+  const librosVisibles = libros.map((entrada) => ({
+    id: entrada.book.id,
+    titulo: entrada.book.title,
+    autor: entrada.book.genre ?? "Autor desconocido",
+    estado: entrada.status.toUpperCase() as Estado,
+    rating: entrada.rating,
+  }));
 
   return (
     <div className="biblioteca">
-      <Sidebar itemActivo="My Books" />
+      <Sidebar itemActivo="My Books" onCerrarSesion={manejarCerrarSesion} />
 
       <main className="biblioteca__contenido">
         <header className="biblioteca__cabecera">
@@ -144,8 +130,10 @@ export default function Biblioteca() {
           className="biblioteca__rejilla"
           aria-label="Mis libros"
         >
-          {librosVisibles.map((libro) => (
-            <article className="tarjeta-libro" key={libro.titulo}>
+          {isLoading && <p className="biblioteca__estado">Cargando biblioteca...</p>}
+          {error && <p className="biblioteca__estado biblioteca__estado--error" role="alert">{error}</p>}
+          {!isLoading && !error && librosVisibles.map((libro) => (
+            <article className="tarjeta-libro" key={libro.id}>
               <span className="tarjeta-libro__estado">{libro.estado}</span>
 
               <div

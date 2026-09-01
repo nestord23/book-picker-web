@@ -218,6 +218,18 @@
     background-color: #b4ff39;
 }
 
+.biblioteca__estado {
+    grid-column: 1 / -1;
+    padding: 24px;
+    font-family: var(--font-space-grotesk);
+    font-size: 14px;
+    color: #000;
+}
+
+.biblioteca__estado--error {
+    color: #a00;
+}
+
 /* ===== Responsive ===== */
 
 @media (max-width: 900px) {

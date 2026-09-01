@@ -82,6 +82,19 @@
     text-align: center;
 }
 
+.registro__banner--error {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border: 2px solid #b3261e;
+    background-color: #ffd6d6;
+    color: #b3261e;
+    font-family: var(--font-geist-mono);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    border-radius: 2px;
+}
+
 .registro__formulario {
     display: flex;
     flex-direction: column;
