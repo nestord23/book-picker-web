@@ -47,6 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <meta name="darkreader-lock" />
+        <link rel="icon" href="/book_picker_logo.png" />
       </head>
       <body className="min-h-full flex flex-col">
         <AuthProvider>{children}</AuthProvider>
